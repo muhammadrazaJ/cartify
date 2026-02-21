@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account — Cartify</title>
+    <meta name="description" content="Register a new Cartify account to start shopping." />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===================================================================
+           DESIGN TOKENS
+           =================================================================== */
+        :root {
+            --clr-bg:            #0f1117;
+            --clr-surface:       #1a1d27;
+            --clr-surface-2:     #212434;
+            --clr-border:        #2e3147;
+            --clr-primary:       #6c63ff;
+            --clr-primary-hover: #5a52e0;
+            --clr-primary-glow:  rgba(108, 99, 255, 0.25);
+            --clr-success:       #22c55e;
+            --clr-error:         #f87171;
+            --clr-error-bg:      rgba(248, 113, 113, 0.08);
+            --clr-text:          #e2e4ed;
+            --clr-text-muted:    #7c82a0;
+            --clr-label:         #a8afc8;
+            --radius-sm:         6px;
+            --radius-md:         12px;
+            --radius-lg:         20px;
+            --shadow-card:       0 24px 64px rgba(0, 0, 0, 0.55);
+            --shadow-glow:       0 0 30px rgba(108, 99, 255, 0.18);
+            --transition:        0.22s ease;
+        }
+
+        /* ===================================================================
+           RESET & BASE
+           =================================================================== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--clr-bg);
+            color: var(--clr-text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            background-image:
+                radial-gradient(ellipse 60% 60% at 20% 10%, rgba(108,99,255,.12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 80% 90%, rgba(99,179,255,.08) 0%, transparent 70%);
+        }
+
+        /* ===================================================================
+           CARD
+           =================================================================== */
+        .card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-lg);
+            padding: 44px 40px;
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+            animation: fadeUp .45s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===================================================================
+           HEADER / LOGO
+           =================================================================== */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .brand-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--clr-primary), #a78bfa);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -.3px;
+            background: linear-gradient(90deg, #6c63ff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-heading {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--clr-text);
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            font-size: 14px;
+            color: var(--clr-text-muted);
+            margin-bottom: 28px;
+        }
+
+        /* ===================================================================
+           FORM FIELDS
+           =================================================================== */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--clr-label);
+            margin-bottom: 6px;
+        }
+
+        .optional-tag {
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--clr-text-muted);
+            margin-left: 4px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--clr-surface-2);
+            border: 1.5px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            color: var(--clr-text);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        input::placeholder { color: var(--clr-text-muted); }
+
+        input:focus {
+            border-color: var(--clr-primary);
+            box-shadow: 0 0 0 3px var(--clr-primary-glow);
+        }
+
+        /* Error state on input */
+        input.is-invalid {
+            border-color: var(--clr-error) !important;
+            box-shadow: 0 0 0 3px rgba(248,113,113,.15) !important;
+        }
+
+        /* ===================================================================
+           VALIDATION MESSAGES
+           =================================================================== */
+        .field-error {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 6px;
+            color: var(--clr-error);
+            font-size: 12px;
+            font-weight: 500;
+            animation: fadeIn .2s ease;
+        }
+
+        .field-error::before {
+            content: '⚠';
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===================================================================
+           PASSWORD STRENGTH HINT
+           =================================================================== */
+        .password-hint {
+            margin-top: 7px;
+            font-size: 11.5px;
+            color: var(--clr-text-muted);
+            line-height: 1.5;
+        }
+
+        /* ===================================================================
+           SUBMIT BUTTON
+           =================================================================== */
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            background: linear-gradient(135deg, var(--clr-primary), #7c6ffa);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+            box-shadow: 0 4px 18px rgba(108,99,255,.4);
+        }
+
+        .btn-primary:hover {
+            opacity: .92;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(108,99,255,.55);
+        }
+
+        .btn-primary:active { transform: translateY(0); opacity: 1; }
+
+        /* ===================================================================
+           FOOTER LINK
+           =================================================================== */
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--clr-text-muted);
+        }
+
+        .footer-text a {
+            color: var(--clr-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition);
+        }
+
+        .footer-text a:hover { color: #a78bfa; }
+
+        /* ===================================================================
+           RESPONSIVE
+           =================================================================== */
+        @media (max-width: 520px) {
+            .card { padding: 32px 22px; }
+            .card-heading { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- =========================================================
+     REGISTRATION CARD
+     ========================================================= -->
+<div class="card">
+
+    <!-- Brand / Logo -->
+    <div class="brand">
+        <div class="brand-icon">🛒</div>
+        <span class="brand-name">Cartify</span>
+    </div>
+
+    <h1 class="card-heading">Create an account</h1>
+    <p class="card-sub">Join Cartify and start shopping today.</p>
+
+    <!--
+        th:action   — posts to /register with the CSRF token automatically appended by Thymeleaf
+        th:object   — binds the form to RegistrationDto so th:field binds individual fields
+        novalidate  — disable native browser validation; we use server-side + JS hints instead
+    -->
+    <form id="registrationForm"
+          th:action="@{/register}"
+          th:object="${registrationDto}"
+          method="post"
+          novalidate>
+
+        <!-- CSRF token is injected automatically by Thymeleaf + Spring Security -->
+
+        <!-- -------------------------------------------------------
+             FULL NAME
+             ------------------------------------------------------- -->
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text"
+                   id="fullName"
+                   th:field="*{fullName}"
+                   th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid'"
+                   placeholder="e.g. Jane Doe"
+                   autocomplete="name" />
+            <!-- Server-side validation error -->
+            <div class="field-error"
+                 th:if="${#fields.hasErrors('fullName')}"
+                 th:errors="*{fullName}"></div>
+        </div>
+
+        <!-- -------------------------------------------------------
+             EMAIL
+             ------------------------------------------------------- -->
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email"
+                   id="email"
+                   th:field="*{email}"
+                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"
+                   placeholder="you@example.com"
+                   autocomplete="email" />
+            <div class="field-error"
+                 th:if="${#fields.hasErrors('email')}"
+                 th:errors="*{email}"></div>
+        </div>
+
+        <!-- -------------------------------------------------------
+             PASSWORD
+             ------------------------------------------------------- -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password"
+                   id="password"
+                   th:field="*{password}"
+                   th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                   placeholder="Create a strong password"
+                   autocomplete="new-password" />
+            <div class="field-error"
+                 th:if="${#fields.hasErrors('password')}"
+                 th:errors="*{password}"></div>
+            <!-- Hint shown when no error -->
+            <p class="password-hint"
+               th:unless="${#fields.hasErrors('password')}">
+                Min 8 chars · uppercase · lowercase · number · special character
+            </p>
+        </div>
+
+        <!-- -------------------------------------------------------
+             CONFIRM PASSWORD
+             ------------------------------------------------------- -->
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password"
+                   id="confirmPassword"
+                   th:field="*{confirmPassword}"
+                   th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'"
+                   placeholder="Repeat your password"
+                   autocomplete="new-password" />
+            <div class="field-error"
+                 th:if="${#fields.hasErrors('confirmPassword')}"
+                 th:errors="*{confirmPassword}"></div>
+        </div>
+
+        <!-- -------------------------------------------------------
+             PHONE NUMBER (optional)
+             ------------------------------------------------------- -->
+        <div class="form-group">
+            <label for="phoneNumber">
+                Phone Number
+                <span class="optional-tag">(optional)</span>
+            </label>
+            <input type="tel"
+                   id="phoneNumber"
+                   th:field="*{phoneNumber}"
+                   th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid'"
+                   placeholder="+1 555 000 0000"
+                   autocomplete="tel" />
+            <div class="field-error"
+                 th:if="${#fields.hasErrors('phoneNumber')}"
+                 th:errors="*{phoneNumber}"></div>
+        </div>
+
+        <!-- -------------------------------------------------------
+             SUBMIT
+             ------------------------------------------------------- -->
+        <button type="submit" class="btn-primary" id="registerBtn">
+            Create Account
+        </button>
+
+    </form>
+
+    <p class="footer-text">
+        Already have an account?
+        <a th:href="@{/login}">Sign in</a>
+    </p>
+
+</div>
+
+<script>
+    /**
+     * Client-side progressive enhancement:
+     * Shows inline mismatch warning as the user types confirmPassword,
+     * without preventing server-side validation from being the source of truth.
+     */
+    const pwField  = document.getElementById('password');
+    const cpwField = document.getElementById('confirmPassword');
+
+    function checkMatch() {
+        if (cpwField.value && pwField.value !== cpwField.value) {
+            cpwField.classList.add('is-invalid');
+        } else {
+            cpwField.classList.remove('is-invalid');
+        }
+    }
+
+    pwField.addEventListener('input', checkMatch);
+    cpwField.addEventListener('input', checkMatch);
+</script>
+
+</body>
+</html>

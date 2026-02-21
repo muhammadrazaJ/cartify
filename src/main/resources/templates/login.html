@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In — Cartify</title>
+    <meta name="description" content="Sign in to your Cartify account." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        :root {
+            --clr-bg: #0f1117;
+            --clr-surface: #1a1d27;
+            --clr-surface-2: #212434;
+            --clr-border: #2e3147;
+            --clr-primary: #6c63ff;
+            --clr-primary-hover: #5a52e0;
+            --clr-primary-glow: rgba(108, 99, 255, 0.25);
+            --clr-success: #22c55e;
+            --clr-success-bg: rgba(34, 197, 94, 0.10);
+            --clr-error: #f87171;
+            --clr-error-bg: rgba(248, 113, 113, 0.08);
+            --clr-text: #e2e4ed;
+            --clr-text-muted: #7c82a0;
+            --clr-label: #a8afc8;
+            --radius-sm: 6px;
+            --radius-lg: 20px;
+            --shadow-card: 0 24px 64px rgba(0, 0, 0, 0.55);
+            --transition: 0.22s ease;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--clr-bg);
+            color: var(--clr-text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            background-image:
+                radial-gradient(ellipse 60% 60% at 20% 10%, rgba(108, 99, 255, .12) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 80% 90%, rgba(99, 179, 255, .08) 0%, transparent 70%);
+        }
+
+        .card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--clr-surface);
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-lg);
+            padding: 44px 40px;
+            box-shadow: var(--shadow-card), 0 0 30px rgba(108, 99, 255, .18);
+            animation: fadeUp .45s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--clr-primary), #a78bfa);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -.3px;
+            background: linear-gradient(90deg, #6c63ff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-heading {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .card-sub {
+            font-size: 14px;
+            color: var(--clr-text-muted);
+            margin-bottom: 24px;
+        }
+
+        /* === Alerts === */
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            animation: fadeIn .3s ease;
+        }
+
+        .alert-success {
+            background: var(--clr-success-bg);
+            border: 1px solid rgba(34, 197, 94, .3);
+            color: #4ade80;
+        }
+
+        .alert-error {
+            background: var(--clr-error-bg);
+            border: 1px solid rgba(248, 113, 113, .25);
+            color: var(--clr-error);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === Form === */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--clr-label);
+            margin-bottom: 6px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--clr-surface-2);
+            border: 1.5px solid var(--clr-border);
+            border-radius: var(--radius-sm);
+            color: var(--clr-text);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color var(--transition), box-shadow var(--transition);
+        }
+
+        input::placeholder {
+            color: var(--clr-text-muted);
+        }
+
+        input:focus {
+            border-color: var(--clr-primary);
+            box-shadow: 0 0 0 3px var(--clr-primary-glow);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            background: linear-gradient(135deg, var(--clr-primary), #7c6ffa);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+            box-shadow: 0 4px 18px rgba(108, 99, 255, .4);
+        }
+
+        .btn-primary:hover {
+            opacity: .92;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(108, 99, 255, .55);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--clr-text-muted);
+        }
+
+        .footer-text a {
+            color: var(--clr-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition);
+        }
+
+        .footer-text a:hover {
+            color: #a78bfa;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 32px 22px;
+            }
+
+            .card-heading {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <div class="brand">
+            <div class="brand-icon">🛒</div>
+            <span class="brand-name">Cartify</span>
+        </div>
+
+        <h1 class="card-heading">Welcome back</h1>
+        <p class="card-sub">Sign in to continue shopping.</p>
+
+        <!--
+        Success banner: shown when redirected from /register?registered
+        th:if checks whether the 'registered' request parameter is present.
+    -->
+        <div class="alert alert-success" th:if="${param.registered}">
+            ✅ Account created! You can now sign in.
+        </div>
+
+        <!--
+        Error banner: shown when Spring Security sets the 'error' param on failed login.
+    -->
+        <div class="alert alert-error" th:if="${param.error}">
+            ⚠ Invalid email or password. Please try again.
+        </div>
+
+        <!--
+        Logout banner: shown after successful logout (/login?logout).
+    -->
+        <div class="alert alert-success" th:if="${param.logout}">
+            👋 You have been signed out successfully.
+        </div>
+
+        <!--
+        Spring Security handles POST /login automatically.
+        The username parameter name must be 'username' by default (we use email as username).
+    -->
+        <form th:action="@{/login}" method="post">
+
+            <div class="form-group">
+                <label for="username">Email Address</label>
+                <input type="email" id="username" name="username" placeholder="you@example.com" autocomplete="email"
+                    required />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Your password"
+                    autocomplete="current-password" required />
+            </div>
+
+            <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
+
+        </form>
+
+        <p class="footer-text">
+            Don't have an account?
+            <a th:href="@{/register}">Create one</a>
+        </p>
+
+    </div>
+
+</body>
+
+</html>
