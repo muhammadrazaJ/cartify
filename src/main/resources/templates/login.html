@@ -103,6 +103,7 @@
             letter-spacing: -.3px;
             background: linear-gradient(90deg, #6c63ff, #a78bfa);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -218,6 +219,44 @@
             opacity: 1;
         }
 
+        /* === Remember-Me row === */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--clr-label);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--clr-primary);
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .forgot-link {
+            font-size: 13px;
+            color: var(--clr-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition);
+        }
+
+        .forgot-link:hover {
+            color: #a78bfa;
+        }
+
         .footer-text {
             text-align: center;
             margin-top: 20px;
@@ -298,6 +337,22 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Your password"
                     autocomplete="current-password" required />
+            </div>
+
+            <!--
+                Remember-Me checkbox.
+                name="remember-me" MUST match rememberMeParameter in SecurityConfig.
+                When checked, Spring Security issues a persistent cookie valid for 7 days.
+            -->
+            <div class="form-options">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="rememberMe" name="remember-me" />
+                    Remember me for 7 days
+                </label>
+                <!--
+                    Placeholder forgot-password link — wire up when feature is implemented.
+                -->
+                <a href="#" class="forgot-link">Forgot password?</a>
             </div>
 
             <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
