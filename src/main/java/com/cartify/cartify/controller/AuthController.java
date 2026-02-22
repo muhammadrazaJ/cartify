@@ -46,9 +46,8 @@ public class AuthController {
      */
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        // Populate an empty DTO so Thymeleaf can bind th:field expressions
-        model.addAttribute("registrationDto", new RegistrationDto());
-        return "registration"; // resolves to templates/registration.html
+        model.addAttribute("registerDto", new RegistrationDto()); // was "registrationDto"
+        return "registration";
     }
 
     // -------------------------------------------------------------------------
@@ -73,7 +72,7 @@ public class AuthController {
      */
     @PostMapping("/register")
     public String processRegistration(
-            @Valid @ModelAttribute("registrationDto") RegistrationDto dto,
+            @Valid @ModelAttribute("registerDto") RegistrationDto dto, // was "registrationDto"
             BindingResult bindingResult,
             Model model
     ) {
